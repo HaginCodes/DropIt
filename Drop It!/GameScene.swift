@@ -29,17 +29,28 @@ class GameScene: SKScene {
     }
     
     func SpawnShapes(){
+        
         greenTriangle = SKSpriteNode(imageNamed:"greenTriangle")
         purpleOctagon = SKSpriteNode(imageNamed: "purpleOctagon")
         redSquare = SKSpriteNode(imageNamed: "redSquare")
         var MinValue = self.size.width / 8
-        var MaxValue = self.size.width - 70
+        var MaxValue = self.size.width - 90
+        
         var SpawnPoint = UInt32(MaxValue - MinValue)
         greenTriangle.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
         self.addChild(greenTriangle)
+        let action1 = SKAction.moveToY(-30, duration: 2.0)
+        let action2 = SKAction.moveToY(-30, duration: 2.0)
+        let action3 = SKAction.moveToY(-30, duration: 2.0)
+        greenTriangle.runAction(SKAction.repeatActionForever(action1))
         
-        let action = SKAction.moveToY(-30, duration: 2.0)
-        greenTriangle.runAction(SKAction.repeatActionForever(action))
+        purpleOctagon.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
+        self.addChild(purpleOctagon)
+        purpleOctagon.runAction(SKAction.repeatActionForever(action2))
+        
+        redSquare.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
+        self.addChild(redSquare)
+        redSquare.runAction(SKAction.repeatActionForever(action3))
         
     }
     
