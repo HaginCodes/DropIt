@@ -18,7 +18,7 @@ struct PhysicsCatergory {
     
 }
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var slider = SKSpriteNode()
     var greenTriangle = SKSpriteNode()
@@ -29,11 +29,12 @@ class GameScene: SKScene {
     
     override func didMoveToView(view: SKView) {
         
+        physicsWorld.contactDelegate = self
+        
         slider = SKSpriteNode(imageNamed: "Slider")
         slider.setScale(0.20)
         slider.position = CGPoint(x: self.frame.width / 2, y: 0 + slider.frame.height / 2)
         
-        var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("SpawnShapes"), userInfo: nil, repeats: true)
         
         slider.physicsBody = SKPhysicsBody(rectangleOfSize: slider.size)
         slider.physicsBody?.categoryBitMask = PhysicsCatergory.slider
@@ -41,11 +42,29 @@ class GameScene: SKScene {
         slider.physicsBody?.contactTestBitMask = PhysicsCatergory.coin | PhysicsCatergory.greenTriangle | PhysicsCatergory.orangeHexagon | PhysicsCatergory.purpleOctagon | PhysicsCatergory.redSquare
         slider.physicsBody?.affectedByGravity = false
         slider.physicsBody?.dynamic = false
-        self.addChild(slider)
-    
         
-       
+        var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("SpawnShapes"), userInfo: nil, repeats: true)
+        self.addChild(slider)
+        
+        
+        
     }
+    
+    func didBeginContact(contact: SKPhysicsContact) {
+        
+        var firstBody : SKPhysicsBody = contact.bodyA
+        var secondBody : SKPhysicsBody = contact.bodyB
+    
+        if((firstBody.categoryBitMask == PhysicsCatergory.slider) && (secondBody.categoryBitMask == PhysicsCatergory.greenTriangle)){
+            
+            CollisionWithSlider(firstBody.node as! SKSpriteNode, greenTriangle: secondBody.node as! SKSpriteNode)
+        }
+        
+    }
+        
+        func CollisionWithSlider(slider: SKSpriteNode, greenTriangle: SKSpriteNode){
+            NSLog("hallo")
+        }
     
     func SpawnShapes(){
         
@@ -53,12 +72,19 @@ class GameScene: SKScene {
         purpleOctagon = SKSpriteNode(imageNamed: "purpleOctagon")
         redSquare = SKSpriteNode(imageNamed: "redSquare")
         coin = SKSpriteNode(imageNamed: "coin")
-    
+        
+        greenTriangle.physicsBody = SKPhysicsBody(rectangleOfSize: greenTriangle.size)
+        greenTriangle.physicsBody?.categoryBitMask = PhysicsCatergory.greenTriangle
+        greenTriangle.physicsBody?.contactTestBitMask = PhysicsCatergory.slider
+        greenTriangle.physicsBody?.affectedByGravity = false
+        greenTriangle.physicsBody?.dynamic = false
+        
         var MinValue = self.size.width / 8
-        var MaxValue = self.size.width - 90
+        var MaxValue = self.size.width - 150
         var SpawnPoint = UInt32(MaxValue - MinValue)
         
-        let action1 = SKAction.moveToY(-30, duration: 3.0)
+        let action = SKAction.moveToY(-30, duration: 2.0)
+       
         
         slider.zPosition = 1
         coin.zPosition = 2
@@ -72,19 +98,9 @@ class GameScene: SKScene {
         
         greenTriangle.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
         self.addChild(greenTriangle)
-        greenTriangle.runAction(SKAction.repeatActionForever(action1))
+        greenTriangle.runAction(SKAction.repeatActionForever(action))
         
-        purpleOctagon.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
-        self.addChild(purpleOctagon)
-        purpleOctagon.runAction(SKAction.repeatActionForever(action1))
-        
-        redSquare.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
-        self.addChild(redSquare)
-        redSquare.runAction(SKAction.repeatActionForever(action1))
-        
-        coin.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
-        self.addChild(coin)
-        coin.runAction(SKAction.repeatActionForever(action1))
+       
         
     }
     
@@ -93,8 +109,8 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.locationInNode(self)
             
-                slider.position.x = location.x
-            }
+            slider.position.x = location.x
+        }
         
     }
     
@@ -103,7 +119,7 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.locationInNode(self)
             
-                slider.position.x = location.x
+            slider.position.x = location.x
         }
         
         
