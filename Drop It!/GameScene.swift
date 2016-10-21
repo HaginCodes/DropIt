@@ -15,6 +15,7 @@ struct PhysicsCatergory {
     static let orangeHexagon : UInt32 = 0x1 << 4
     static let purpleOctagon : UInt32 = 0x1 << 5
     static let redSquare : UInt32 = 0x1 << 6
+    static let Wall : UInt32 = 0x1 << 7
     
 }
 
@@ -26,8 +27,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var purpleOctagon = SKSpriteNode()
     var redSquare = SKSpriteNode()
     var coin = SKSpriteNode()
+    var wallPair = SKNode()
     
-    override func didMoveToView(view: SKView) {
+    
+    func createScene(){
         
         physicsWorld.contactDelegate = self
         
@@ -45,8 +48,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("SpawnShapes"), userInfo: nil, repeats: true)
         self.addChild(slider)
+
+        
+    }
+    
+    override func didMoveToView(view: SKView) {
+        
+            createScene()
         
         
+    }
+    
+    func invisibleBounderies(){
+        
+        wallPair = SKNode()
+        wallPair.name = "wallPair"
+        
+        let topWall = SKSpriteNode(imageNamed: "Wall")
+        let btmWall = SKSpriteNode(imageNamed: "Wall")
+        
+        topWall.position = CGPoint(x: self.frame.width + 25, y: self.frame.height / 2 + 350)
+        btmWall.position = CGPoint(x: self.frame.width + 25, y: self.frame.height / 2 - 350)
+        
+        topWall.physicsBody = SKPhysicsBody(rectangleOfSize: topWall.size)
+        topwall.physicsBody?.catergoryBitMask = PhysicsCatergory.slider
         
     }
     
