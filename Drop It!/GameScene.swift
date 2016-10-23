@@ -16,6 +16,7 @@ struct PhysicsCatergory {
     static let purpleOctagon : UInt32 = 0x1 << 5
     static let redSquare : UInt32 = 0x1 << 6
     static let Wall : UInt32 = 0x1 << 7
+    static let Score : UInt32 = 0x1 << 8
     
 }
 
@@ -27,7 +28,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var purpleOctagon = SKSpriteNode()
     var redSquare = SKSpriteNode()
     var coin = SKSpriteNode()
-    var wallPair = SKNode()
+    var score = Int()
     
     
     func createScene(){
@@ -44,52 +45,63 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         slider.physicsBody?.collisionBitMask = PhysicsCatergory.coin | PhysicsCatergory.greenTriangle | PhysicsCatergory.orangeHexagon | PhysicsCatergory.purpleOctagon | PhysicsCatergory.redSquare
         slider.physicsBody?.contactTestBitMask = PhysicsCatergory.coin | PhysicsCatergory.greenTriangle | PhysicsCatergory.orangeHexagon | PhysicsCatergory.purpleOctagon | PhysicsCatergory.redSquare
         slider.physicsBody?.affectedByGravity = false
-        slider.physicsBody?.dynamic = false
+        slider.physicsBody?.dynamic = true
         
         var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("SpawnShapes"), userInfo: nil, repeats: true)
         self.addChild(slider)
 
+        invisibleBounderies()
+        
+    }
+    
+    func didBeginContact(contact: SKPhysicsContact) {
+        let firstBody = contact.bodyA
+        let secondBody = contact.bodyB
+        
+        if firstBody.categoryBitMask == PhysicsCatergory.greenTriangle && secondBody.categoryBitMask == PhysicsCatergory.Score{
+            score++
+            print(score)
+            
+        }
+        else if firstBody.categoryBitMask == PhysicsCatergory.Score && secondBody.categoryBitMask == PhysicsCatergory.greenTriangle{
+            score++
+            print(score)
+        }
+            
+        
         
     }
     
     override func didMoveToView(view: SKView) {
         
             createScene()
+       
         
         
     }
     
     func invisibleBounderies(){
         
-        wallPair = SKNode()
-        wallPair.name = "wallPair"
+        let scoreNode = SKSpriteNode()
+        scoreNode.size = CGSize(width: 5, height: 600)
+        scoreNode.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 10)
+        scoreNode.physicsBody = SKPhysicsBody(rectangleOfSize: scoreNode.size)
+        scoreNode.physicsBody?.affectedByGravity = false
+        scoreNode.physicsBody?.dynamic = false
+        scoreNode.physicsBody?.categoryBitMask = PhysicsCatergory.Score
+        scoreNode.physicsBody?.collisionBitMask = 0
+        scoreNode.physicsBody?.contactTestBitMask = PhysicsCatergory.greenTriangle
+        scoreNode.zRotation = CGFloat(M_PI/2.0)
+        scoreNode.color = SKColor.blueColor()
+    
         
-        let topWall = SKSpriteNode(imageNamed: "Wall")
-        let btmWall = SKSpriteNode(imageNamed: "Wall")
+        self.addChild(scoreNode)
+     
         
-        topWall.position = CGPoint(x: self.frame.width + 25, y: self.frame.height / 2 + 350)
-        btmWall.position = CGPoint(x: self.frame.width + 25, y: self.frame.height / 2 - 350)
-        
-        topWall.physicsBody = SKPhysicsBody(rectangleOfSize: topWall.size)
-        topwall.physicsBody?.catergoryBitMask = PhysicsCatergory.slider
         
     }
     
-    func didBeginContact(contact: SKPhysicsContact) {
-        
-        var firstBody : SKPhysicsBody = contact.bodyA
-        var secondBody : SKPhysicsBody = contact.bodyB
-    
-        if((firstBody.categoryBitMask == PhysicsCatergory.slider) && (secondBody.categoryBitMask == PhysicsCatergory.greenTriangle)){
-            
-            CollisionWithSlider(firstBody.node as! SKSpriteNode, greenTriangle: secondBody.node as! SKSpriteNode)
-        }
-        
-    }
-        
-        func CollisionWithSlider(slider: SKSpriteNode, greenTriangle: SKSpriteNode){
-            NSLog("hallo")
-        }
+   
     
     func SpawnShapes(){
         
@@ -99,10 +111,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         coin = SKSpriteNode(imageNamed: "coin")
         
         greenTriangle.physicsBody = SKPhysicsBody(rectangleOfSize: greenTriangle.size)
-        greenTriangle.physicsBody?.categoryBitMask = PhysicsCatergory.greenTriangle
-        greenTriangle.physicsBody?.contactTestBitMask = PhysicsCatergory.slider
+        greenTriangle.physicsBody?.categoryBitMask = 0
+        greenTriangle.physicsBody?.collisionBitMask = PhysicsCatergory.Score 
+        greenTriangle.physicsBody?.contactTestBitMask = PhysicsCatergory.Score
         greenTriangle.physicsBody?.affectedByGravity = false
-        greenTriangle.physicsBody?.dynamic = false
+        greenTriangle.physicsBody?.dynamic = true
         
         var MinValue = self.size.width / 8
         var MaxValue = self.size.width - 150
@@ -118,8 +131,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         purpleOctagon.zPosition = 5
         redSquare.zPosition = 6
         
-        
-        
+
         
         greenTriangle.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
         self.addChild(greenTriangle)
