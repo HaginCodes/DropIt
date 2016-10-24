@@ -49,6 +49,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("SpawnShapes"), userInfo: nil, repeats: true)
         self.addChild(slider)
+        
+         physicsWorld.gravity = CGVectorMake(0, -0.5)
 
         invisibleBounderies()
         
@@ -83,8 +85,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func invisibleBounderies(){
         
         let scoreNode = SKSpriteNode()
-        scoreNode.size = CGSize(width: 5, height: 600)
-        scoreNode.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 10)
+        scoreNode.size = CGSize(width: 1, height: 600)
+        scoreNode.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 10 - 200)
         scoreNode.physicsBody = SKPhysicsBody(rectangleOfSize: scoreNode.size)
         scoreNode.physicsBody?.affectedByGravity = false
         scoreNode.physicsBody?.dynamic = false
@@ -92,6 +94,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         scoreNode.physicsBody?.collisionBitMask = PhysicsCatergory.Score
         scoreNode.physicsBody?.contactTestBitMask = PhysicsCatergory.greenTriangle
         scoreNode.zRotation = CGFloat(M_PI/2.0)
+        scoreNode.zPosition = 1
         scoreNode.color = SKColor.blueColor()
     
         
@@ -114,11 +117,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         greenTriangle.physicsBody?.categoryBitMask = PhysicsCatergory.greenTriangle
         greenTriangle.physicsBody?.collisionBitMask = PhysicsCatergory.Score 
         greenTriangle.physicsBody?.contactTestBitMask = PhysicsCatergory.Score
-        greenTriangle.physicsBody?.affectedByGravity = false
+        greenTriangle.physicsBody?.affectedByGravity = true
         greenTriangle.physicsBody?.dynamic = true
         
-        var MinValue = self.size.width / 8
-        var MaxValue = self.size.width - 150
+        var MinValue = self.size.width / 2
+        var MaxValue = self.size.height + 400
         var SpawnPoint = UInt32(MaxValue - MinValue)
         
         let action = SKAction.moveToY(-30, duration: 2.0)
@@ -135,7 +138,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         greenTriangle.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
         self.addChild(greenTriangle)
-        greenTriangle.runAction(SKAction.repeatActionForever(action))
+        greenTriangle.physicsBody?.velocity = CGVectorMake(5,1-0)
+
         
        
         
