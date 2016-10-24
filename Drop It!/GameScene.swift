@@ -89,7 +89,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         scoreNode.physicsBody?.affectedByGravity = false
         scoreNode.physicsBody?.dynamic = false
         scoreNode.physicsBody?.categoryBitMask = PhysicsCatergory.Score
-        scoreNode.physicsBody?.collisionBitMask = 0
+        scoreNode.physicsBody?.collisionBitMask = PhysicsCatergory.Score
         scoreNode.physicsBody?.contactTestBitMask = PhysicsCatergory.greenTriangle
         scoreNode.zRotation = CGFloat(M_PI/2.0)
         scoreNode.color = SKColor.blueColor()
@@ -111,7 +111,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         coin = SKSpriteNode(imageNamed: "coin")
         
         greenTriangle.physicsBody = SKPhysicsBody(rectangleOfSize: greenTriangle.size)
-        greenTriangle.physicsBody?.categoryBitMask = 0
+        greenTriangle.physicsBody?.categoryBitMask = PhysicsCatergory.greenTriangle
         greenTriangle.physicsBody?.collisionBitMask = PhysicsCatergory.Score 
         greenTriangle.physicsBody?.contactTestBitMask = PhysicsCatergory.Score
         greenTriangle.physicsBody?.affectedByGravity = false
