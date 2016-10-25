@@ -29,6 +29,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var redSquare = SKSpriteNode()
     var coin = SKSpriteNode()
     var score = Int()
+    var scoreLbl = SKLabelNode()
     
     
     func createScene(){
@@ -50,8 +51,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("SpawnShapes"), userInfo: nil, repeats: true)
         self.addChild(slider)
         
-         physicsWorld.gravity = CGVectorMake(0, -0.5)
+         physicsWorld.gravity = CGVectorMake(0, -1)
+        
+        scoreLbl.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2 + self.frame.height / 2.5)
+        scoreLbl.fontSize = 60
+        self.addChild(scoreLbl)
+        scoreLbl.zPosition = 5
 
+        
         invisibleBounderies()
         
     }
@@ -62,14 +69,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         if firstBody.categoryBitMask == PhysicsCatergory.greenTriangle && secondBody.categoryBitMask == PhysicsCatergory.Score{
             score++
-            print(score)
+            scoreLbl.text = "\(score)"
+            firstBody.node?.removeFromParent()
             
         }
         else if firstBody.categoryBitMask == PhysicsCatergory.Score && secondBody.categoryBitMask == PhysicsCatergory.greenTriangle{
             score++
-            print(score)
+            scoreLbl.text = "\(score)"
+            secondBody.node?.removeFromParent()
         }
+        
+        else if firstBody.categoryBitMask == PhysicsCatergory.slider && secondBody.categoryBitMask == PhysicsCatergory.greenTriangle{
             
+        }
+        
+        else if firstBody.categoryBitMask == PhysicsCatergory.greenTriangle && secondBody.categoryBitMask == PhysicsCatergory.slider{
+            
+        }
+        
         
         
     }
@@ -86,7 +103,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         let scoreNode = SKSpriteNode()
         scoreNode.size = CGSize(width: 1, height: 600)
-        scoreNode.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 10 - 200)
+        scoreNode.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 10 )
         scoreNode.physicsBody = SKPhysicsBody(rectangleOfSize: scoreNode.size)
         scoreNode.physicsBody?.affectedByGravity = false
         scoreNode.physicsBody?.dynamic = false
@@ -96,7 +113,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         scoreNode.zRotation = CGFloat(M_PI/2.0)
         scoreNode.zPosition = 1
         scoreNode.color = SKColor.blueColor()
-    
         
         self.addChild(scoreNode)
      
@@ -120,11 +136,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         greenTriangle.physicsBody?.affectedByGravity = true
         greenTriangle.physicsBody?.dynamic = true
         
-        var MinValue = self.size.width / 2
-        var MaxValue = self.size.height + 400
-        var SpawnPoint = UInt32(MaxValue - MinValue)
+        let MinValue = self.size.width / 2
+        let MaxValue = self.size.height + 400
+        let SpawnPoint = UInt32(MaxValue - MinValue)
         
-        let action = SKAction.moveToY(-30, duration: 2.0)
+    
        
         
         slider.zPosition = 1
