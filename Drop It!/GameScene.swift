@@ -117,12 +117,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.addChild(scoreNode)
      
         
-        
     }
     
    
     
     func SpawnShapes(){
+        
         
         greenTriangle = SKSpriteNode(imageNamed:"greenTriangle")
         purpleOctagon = SKSpriteNode(imageNamed: "purpleOctagon")
@@ -137,7 +137,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         greenTriangle.physicsBody?.dynamic = true
         
         let MinValue = self.size.width / 2
-        let MaxValue = self.size.height + 400
+        let MaxValue = self.size.width - 400
         let SpawnPoint = UInt32(MaxValue - MinValue)
         
     
@@ -154,12 +154,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         greenTriangle.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
         self.addChild(greenTriangle)
-        greenTriangle.physicsBody?.velocity = CGVectorMake(5,1-0)
+        greenTriangle.physicsBody?.velocity = CGVectorMake(5,-2)
 
         
        
         
     }
+    
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
