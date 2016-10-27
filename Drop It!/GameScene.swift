@@ -48,6 +48,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         slider.physicsBody?.affectedByGravity = false
         slider.physicsBody?.dynamic = true
         
+       
         var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("SpawnShapes"), userInfo: nil, repeats: true)
         self.addChild(slider)
         
@@ -103,7 +104,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         let scoreNode = SKSpriteNode()
         scoreNode.size = CGSize(width: 1, height: 600)
-        scoreNode.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 10 )
+        scoreNode.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 10  - 150)
         scoreNode.physicsBody = SKPhysicsBody(rectangleOfSize: scoreNode.size)
         scoreNode.physicsBody?.affectedByGravity = false
         scoreNode.physicsBody?.dynamic = false
@@ -154,7 +155,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         greenTriangle.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
         self.addChild(greenTriangle)
-        greenTriangle.physicsBody?.velocity = CGVectorMake(5,1-0)
+        greenTriangle.physicsBody?.velocity = CGVectorMake(5, -10)
 
         
        
