@@ -51,7 +51,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("SpawnShapes"), userInfo: nil, repeats: true)
         self.addChild(slider)
         
-         physicsWorld.gravity = CGVectorMake(0, -1)
+         physicsWorld.gravity = CGVectorMake(0, -0.5)
         
         scoreLbl.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2 + self.frame.height / 2.5)
         scoreLbl.fontSize = 60
@@ -136,8 +136,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         greenTriangle.physicsBody?.affectedByGravity = true
         greenTriangle.physicsBody?.dynamic = true
         
-        let MinValue = self.size.width / 2
-        let MaxValue = self.size.width - 400
+        let MinValue = self.size.width
+        let MaxValue = self.size.width + 800
         let SpawnPoint = UInt32(MaxValue - MinValue)
         
     
@@ -152,7 +152,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
 
         
-        greenTriangle.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
+        greenTriangle.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint + 200 )), y: self.size.height)
+        print(greenTriangle.position)
         self.addChild(greenTriangle)
         greenTriangle.physicsBody?.velocity = CGVectorMake(5,-2)
 
