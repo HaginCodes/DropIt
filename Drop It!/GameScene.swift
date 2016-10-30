@@ -138,8 +138,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         greenTriangle.physicsBody?.dynamic = true
         
         //let MinValue = 0.0 as! CGFloat
-        let MaxValue = self.size.width - 180.0
-        let SpawnPoint = UInt32(MaxValue)
+        //let MaxValue = self.size.width / 2 * 1.33
+        let MaxValue = self.size.width / 2 - 200
+        let MinValue = self.size.width / 3 * 0.95
+        
+     
+
+        let rangeMax = UInt32(MaxValue)
+        let rangeMin = UInt32(MinValue)
         
     
        
@@ -153,12 +159,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
 
         
-        greenTriangle.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
+        greenTriangle.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMax), y: self.size.height)
+        //arc4random_uniform(rangeMin) + rangeMax
         print(greenTriangle.position)
         self.addChild(greenTriangle)
         
         greenTriangle.physicsBody?.velocity = CGVectorMake(5, -10)
-        greenTriangle.physicsBody?.velocity = CGVectorMake(5,-2)
+        
 
 
         
