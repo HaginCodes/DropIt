@@ -49,10 +49,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         slider.physicsBody?.dynamic = true
         
        
-        var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("SpawnShapes"), userInfo: nil, repeats: true)
+        var timer = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: Selector("SpawnShapes"), userInfo: nil, repeats: true)
         self.addChild(slider)
         
-         physicsWorld.gravity = CGVectorMake(0, -0.5)
+        physicsWorld.gravity = CGVectorMake(0, -0.5)
         
         scoreLbl.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2 + self.frame.height / 2.5)
         scoreLbl.fontSize = 60
@@ -95,8 +95,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     override func didMoveToView(view: SKView) {
         
             createScene()
-       
-        
         
     }
     
@@ -137,8 +135,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         greenTriangle.physicsBody?.affectedByGravity = true
         greenTriangle.physicsBody?.dynamic = true
         
-        //let MinValue = 0.0 as! CGFloat
-        //let MaxValue = self.size.width / 2 * 1.33
+        purpleOctagon.physicsBody = SKPhysicsBody(texture: purpleOctagon.texture!,size: purpleOctagon.texture!.size())
+        purpleOctagon.physicsBody?.categoryBitMask = PhysicsCatergory.purpleOctagon
+        purpleOctagon.physicsBody?.collisionBitMask = PhysicsCatergory.Score
+        purpleOctagon.physicsBody?.contactTestBitMask = PhysicsCatergory.Score
+        purpleOctagon.physicsBody?.affectedByGravity = true
+        purpleOctagon.physicsBody?.dynamic = true
+        
         let MaxValue = self.size.width / 2 - 200
         let MinValue = self.size.width / 3 * 0.95
         
@@ -158,13 +161,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         redSquare.zPosition = 6
         
 
+        purpleOctagon.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMin), y: self.size.height)
+        self.addChild(purpleOctagon)
         
         greenTriangle.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMax), y: self.size.height)
-        //arc4random_uniform(rangeMin) + rangeMax
-        print(greenTriangle.position)
+        //print(greenTriangle.position)
         self.addChild(greenTriangle)
         
         greenTriangle.physicsBody?.velocity = CGVectorMake(5, -10)
+        purpleOctagon.physicsBody?.velocity = CGVectorMake(5, -10)
         
 
 
