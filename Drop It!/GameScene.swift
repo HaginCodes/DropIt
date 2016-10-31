@@ -17,6 +17,7 @@ struct PhysicsCatergory {
     static let redSquare : UInt32 = 0x1 << 6
     static let Wall : UInt32 = 0x1 << 7
     static let Score : UInt32 = 0x1 << 8
+    static let coinScore : UInt32 = 0x1 << 9
     
 }
 
@@ -68,13 +69,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let firstBody = contact.bodyA
         let secondBody = contact.bodyB
         
-        if firstBody.categoryBitMask == PhysicsCatergory.greenTriangle && secondBody.categoryBitMask == PhysicsCatergory.Score{
+       
+        if firstBody.categoryBitMask == PhysicsCatergory.Score && secondBody.categoryBitMask == PhysicsCatergory.greenTriangle || firstBody.categoryBitMask == PhysicsCatergory.greenTriangle && secondBody.categoryBitMask == PhysicsCatergory.Score{
+            
             score++
             scoreLbl.text = "\(score)"
-            firstBody.node?.removeFromParent()
-            
+            secondBody.node?.removeFromParent()
         }
-        else if firstBody.categoryBitMask == PhysicsCatergory.Score && secondBody.categoryBitMask == PhysicsCatergory.greenTriangle{
+        
+        else if firstBody.categoryBitMask == PhysicsCatergory.Score && secondBody.categoryBitMask == PhysicsCatergory.purpleOctagon || firstBody.categoryBitMask == PhysicsCatergory.purpleOctagon && secondBody.categoryBitMask == PhysicsCatergory.Score{
+            
             score++
             scoreLbl.text = "\(score)"
             secondBody.node?.removeFromParent()
@@ -128,7 +132,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         redSquare = SKSpriteNode(imageNamed: "redSquare")
         coin = SKSpriteNode(imageNamed: "coin")
         
-        greenTriangle.physicsBody = SKPhysicsBody(rectangleOfSize: greenTriangle.size)
+        greenTriangle.physicsBody = SKPhysicsBody(texture: greenTriangle.texture!,size: greenTriangle.texture!.size())
         greenTriangle.physicsBody?.categoryBitMask = PhysicsCatergory.greenTriangle
         greenTriangle.physicsBody?.collisionBitMask = PhysicsCatergory.Score 
         greenTriangle.physicsBody?.contactTestBitMask = PhysicsCatergory.Score
