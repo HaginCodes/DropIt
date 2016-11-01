@@ -30,7 +30,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var redSquare = SKSpriteNode()
     var coin = SKSpriteNode()
     var score = Int()
+    var coinScore = Int()
     var scoreLbl = SKLabelNode()
+    var coinLbl = SKLabelNode()
     
     
     func createScene(){
@@ -59,6 +61,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         scoreLbl.fontSize = 60
         self.addChild(scoreLbl)
         scoreLbl.zPosition = 5
+        
+        coinLbl.position = CGPoint(x: self.frame.width / 2 - self.frame.width / 5, y: self.frame.height / 2 + self.frame.height / 2.5)
+        coinLbl.fontSize = 40
+        self.addChild(coinLbl)
+        coinLbl.zPosition = 5
+        
 
         
         invisibleBounderies()
@@ -82,6 +90,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             score++
             scoreLbl.text = "\(score)"
             secondBody.node?.removeFromParent()
+        }
+            
+        else if firstBody.categoryBitMask == PhysicsCatergory.slider && secondBody.categoryBitMask == PhysicsCatergory.coin || firstBody.categoryBitMask == PhysicsCatergory.coin && secondBody.categoryBitMask == PhysicsCatergory.slider{
+            
+            coinScore++
+            coinLbl.text = "\(score)"
+            secondBody.node?.removeFromParent()
+            
         }
         
         else if firstBody.categoryBitMask == PhysicsCatergory.slider && secondBody.categoryBitMask == PhysicsCatergory.greenTriangle{
@@ -146,6 +162,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         purpleOctagon.physicsBody?.affectedByGravity = true
         purpleOctagon.physicsBody?.dynamic = true
         
+        coin.physicsBody = SKPhysicsBody(texture: coin.texture!, size: coin.texture!.size())
+        coin.physicsBody?.categoryBitMask = PhysicsCatergory.coin
+        coin.physicsBody?.collisionBitMask = PhysicsCatergory.coin
+        coin.physicsBody?.contactTestBitMask = PhysicsCatergory.slider | PhysicsCatergory.Score
+        coin.physicsBody?.affectedByGravity = true
+        coin.physicsBody?.dynamic = true
+        
+        
         let MaxValue = self.size.width / 2 - 200
         let MinValue = self.size.width / 3 * 0.95
         
@@ -165,12 +189,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         redSquare.zPosition = 6
         
 
-        purpleOctagon.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMin), y: self.size.height)
+        purpleOctagon.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMax), y: self.size.height)
         self.addChild(purpleOctagon)
         
         greenTriangle.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMax), y: self.size.height)
-        //print(greenTriangle.position)
         self.addChild(greenTriangle)
+        
+        coin.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMax), y: self.size.height)
+        self.addChild(coin)
         
         greenTriangle.physicsBody?.velocity = CGVectorMake(5, -10)
         purpleOctagon.physicsBody?.velocity = CGVectorMake(5, -10)
