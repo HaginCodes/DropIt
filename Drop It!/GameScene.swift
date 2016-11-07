@@ -62,7 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.addChild(scoreLbl)
         scoreLbl.zPosition = 5
         
-        coinLbl.position = CGPoint(x: self.frame.width / 2 - self.frame.width / 5, y: self.frame.height / 2 + self.frame.height / 2.5)
+        coinLbl.position = CGPoint(x: self.frame.width / 2 - 100, y: self.frame.height / 2 + self.frame.height / 2.5)
         coinLbl.fontSize = 40
         self.addChild(coinLbl)
         coinLbl.zPosition = 5
@@ -179,8 +179,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let rangeMin = UInt32(MinValue)
         
     
-       
-        
         slider.zPosition = 1
         coin.zPosition = 2
         greenTriangle.zPosition = 3
