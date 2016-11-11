@@ -10,28 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Drop It!/GameScene.swift"
-            timestampString = "499574452.39061"
+            timestampString = "500594678.018299"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
-            landmarkName = "GameScene"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Drop It!/GameScene.swift"
-            timestampString = "499575152.453095"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
-            landmarkName = "SpawnShapes()"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
+            landmarkName = "invisibleBounderies()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Drop It!/GameScene.swift"
-            timestampString = "499574415.991999"
+            timestampString = "500594678.018299"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "createScene()"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
+            landmarkName = "SpawnShapes()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

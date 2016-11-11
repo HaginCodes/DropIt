@@ -33,6 +33,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var coinScore = Int()
     var scoreLbl = SKLabelNode()
     var coinLbl = SKLabelNode()
+    var coinTitle = SKLabelNode()
+    
     
     
     func createScene(){
@@ -52,7 +54,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         slider.physicsBody?.dynamic = true
         
        
-        var timer = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: Selector("SpawnShapes"), userInfo: nil, repeats: true)
+        
+        let wait = SKAction.waitForDuration(3, withRange: 2)
+        let spawn = SKAction.runBlock {
+            
+             self.SpawnShapes()
+        }
+        
+        let sequence = SKAction.sequence([wait, spawn])
+        self.runAction(SKAction.repeatActionForever(sequence))
+        
+        
         self.addChild(slider)
         
         physicsWorld.gravity = CGVectorMake(0, -0.5)
@@ -62,12 +74,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.addChild(scoreLbl)
         scoreLbl.zPosition = 5
         
-        coinLbl.position = CGPoint(x: self.frame.width / 2 - self.frame.width / 5, y: self.frame.height / 2 + self.frame.height / 2.5)
+        coinLbl.position = CGPoint(x: self.frame.width / 2 - 100, y: self.frame.height / 2 + self.frame.height / 2.5)
         coinLbl.fontSize = 40
         self.addChild(coinLbl)
         coinLbl.zPosition = 5
         
-
+        coinTitle.position = CGPoint(x: self.frame.width / 2 - 100, y: self.frame.height / 2 + self.frame.height / 2.5 + 35)
+        coinTitle.text = "Coins"
+        
+        coinTitle.fontSize = 30
+        coinTitle.zPosition = 5
+        
+        self.addChild(coinTitle)
+        
+        
+        
+        
         
         invisibleBounderies()
         
@@ -132,6 +154,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         scoreNode.zRotation = CGFloat(M_PI/2.0)
         scoreNode.zPosition = 1
         scoreNode.color = SKColor.blueColor()
+        
+        
         
         self.addChild(scoreNode)
      
