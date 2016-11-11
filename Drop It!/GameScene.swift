@@ -203,8 +203,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let rangeMin = UInt32(MinValue)
         
     
-       
-        
         slider.zPosition = 1
         coin.zPosition = 2
         greenTriangle.zPosition = 3
