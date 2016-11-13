@@ -55,14 +55,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
        
         
-        let wait = SKAction.waitForDuration(3, withRange: 2)
-        let spawn = SKAction.runBlock {
-            
-             self.SpawnShapes()
-        }
-        
-        let sequence = SKAction.sequence([wait, spawn])
-        self.runAction(SKAction.repeatActionForever(sequence))
         
         
         self.addChild(slider)
@@ -87,12 +79,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         self.addChild(coinTitle)
         
+    
         
+        removeFallingObjects()
         
+    }
+    
+    func scheduleDrops(){
         
+        let wait = SKAction.waitForDuration(3, withRange: 2)
+        let spawn = SKAction.runBlock {
+            
+            self.removeFallingObjects()
+        }
         
-        invisibleBounderies()
-        
+        let sequence = SKAction.sequence([wait, spawn])
+        self.runAction(SKAction.repeatActionForever(sequence))
+
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
@@ -140,7 +143,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
     }
     
-    func invisibleBounderies(){
+    func removeFallingObjects(){
         
         let scoreNode = SKSpriteNode()
         scoreNode.size = CGSize(width: 1, height: 600)
@@ -164,7 +167,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
    
     
-    func SpawnShapes(){
+    func allObjects(){
         
         
         greenTriangle = SKSpriteNode(imageNamed:"greenTriangle")
