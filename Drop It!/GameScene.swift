@@ -35,11 +35,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var coinLbl = SKLabelNode()
     var coinTitle = SKLabelNode()
     
-    
-    
-    func createScene(){
-        
-        physicsWorld.contactDelegate = self
+    func Player(){
         
         slider = SKSpriteNode(imageNamed: "Slider")
         slider.setScale(0.20)
@@ -53,13 +49,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         slider.physicsBody?.affectedByGravity = false
         slider.physicsBody?.dynamic = true
         
-       
-        
-        
         
         self.addChild(slider)
         
+    }
+    
+    func createScene(){
+        
+        physicsWorld.contactDelegate = self
+        
         physicsWorld.gravity = CGVectorMake(0, -0.5)
+        
+        Player()
+        scheduleDrops()
+        objectPositions()
+        
+        
+        
+ 
+        
+    }
+    
+    func objectPositions(){
         
         scoreLbl.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2 + self.frame.height / 2.5)
         scoreLbl.fontSize = 60
@@ -78,19 +89,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         coinTitle.zPosition = 5
         
         self.addChild(coinTitle)
-        
-    
-        
-        removeFallingObjects()
-        
+ 
     }
-    
     func scheduleDrops(){
         
         let wait = SKAction.waitForDuration(3, withRange: 2)
         let spawn = SKAction.runBlock {
             
-            self.removeFallingObjects()
+            self.scheduleDrops()
         }
         
         let sequence = SKAction.sequence([wait, spawn])
@@ -143,7 +149,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
     }
     
-    func removeFallingObjects(){
+    func removeObjects(){
         
         let scoreNode = SKSpriteNode()
         scoreNode.size = CGSize(width: 1, height: 600)
@@ -167,7 +173,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
    
     
-    func allObjects(){
+    func allShapes(){
         
         
         greenTriangle = SKSpriteNode(imageNamed:"greenTriangle")
