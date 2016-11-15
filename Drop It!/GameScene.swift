@@ -5,7 +5,6 @@
 //  Created by Christopher Onyango on 10/15/16.
 //  Copyright (c) 2016 Christopher Onyango. All rights reserved.
 //
-
 import SpriteKit
 
 struct PhysicsCatergory {
@@ -34,8 +33,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var scoreLbl = SKLabelNode()
     var coinLbl = SKLabelNode()
     var coinTitle = SKLabelNode()
+
     
-    func Player(){
+    func createScene(){
+        
+        physicsWorld.contactDelegate = self
         
         slider = SKSpriteNode(imageNamed: "Slider")
         slider.setScale(0.20)
@@ -50,27 +52,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         slider.physicsBody?.dynamic = true
         
         
+        
+        let wait = SKAction.waitForDuration(3, withRange: 1)
+        let spawn = SKAction.runBlock {
+            
+            self.SpawnShapes()
+        }
+        
+        let sequence = SKAction.sequence([wait, spawn])
+        self.runAction(SKAction.repeatActionForever(sequence))
+        
+        
+        
+        
         self.addChild(slider)
         
-    }
-    
-    func createScene(){
-        
-        physicsWorld.contactDelegate = self
-        
         physicsWorld.gravity = CGVectorMake(0, -0.5)
-        
-        Player()
-        scheduleDrops()
-        objectPositions()
-        
-        
-        
- 
-        
-    }
-    
-    func objectPositions(){
         
         scoreLbl.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2 + self.frame.height / 2.5)
         scoreLbl.fontSize = 60
@@ -89,33 +86,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         coinTitle.zPosition = 5
         
         self.addChild(coinTitle)
- 
-    }
-    func scheduleDrops(){
         
-        let wait = SKAction.waitForDuration(3, withRange: 2)
-        let spawn = SKAction.runBlock {
-            
-            self.scheduleDrops()
-        }
         
-        let sequence = SKAction.sequence([wait, spawn])
-        self.runAction(SKAction.repeatActionForever(sequence))
-
+        invisibleBounderies()
+        
     }
+    
+    
     
     func didBeginContact(contact: SKPhysicsContact) {
         let firstBody = contact.bodyA
         let secondBody = contact.bodyB
         
-       
+        
         if firstBody.categoryBitMask == PhysicsCatergory.Score && secondBody.categoryBitMask == PhysicsCatergory.greenTriangle || firstBody.categoryBitMask == PhysicsCatergory.greenTriangle && secondBody.categoryBitMask == PhysicsCatergory.Score{
             
             score++
             scoreLbl.text = "\(score)"
             secondBody.node?.removeFromParent()
         }
-        
+            
         else if firstBody.categoryBitMask == PhysicsCatergory.Score && secondBody.categoryBitMask == PhysicsCatergory.purpleOctagon || firstBody.categoryBitMask == PhysicsCatergory.purpleOctagon && secondBody.categoryBitMask == PhysicsCatergory.Score{
             
             score++
@@ -130,11 +120,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             secondBody.node?.removeFromParent()
             
         }
-        
+            
         else if firstBody.categoryBitMask == PhysicsCatergory.slider && secondBody.categoryBitMask == PhysicsCatergory.greenTriangle{
             
         }
-        
+            
         else if firstBody.categoryBitMask == PhysicsCatergory.greenTriangle && secondBody.categoryBitMask == PhysicsCatergory.slider{
             
         }
@@ -145,11 +135,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     override func didMoveToView(view: SKView) {
         
-            createScene()
+        createScene()
         
     }
     
-    func removeObjects(){
+    func invisibleBounderies(){
         
         let scoreNode = SKSpriteNode()
         scoreNode.size = CGSize(width: 1, height: 600)
@@ -167,13 +157,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         
         self.addChild(scoreNode)
-     
+        
         
     }
     
-   
     
-    func allShapes(){
+    
+    func SpawnShapes(){
         
         
         greenTriangle = SKSpriteNode(imageNamed:"greenTriangle")
@@ -183,7 +173,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         greenTriangle.physicsBody = SKPhysicsBody(texture: greenTriangle.texture!,size: greenTriangle.texture!.size())
         greenTriangle.physicsBody?.categoryBitMask = PhysicsCatergory.greenTriangle
-        greenTriangle.physicsBody?.collisionBitMask = PhysicsCatergory.Score 
+        greenTriangle.physicsBody?.collisionBitMask = PhysicsCatergory.Score
         greenTriangle.physicsBody?.contactTestBitMask = PhysicsCatergory.Score
         greenTriangle.physicsBody?.affectedByGravity = true
         greenTriangle.physicsBody?.dynamic = true
@@ -203,15 +193,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         coin.physicsBody?.dynamic = true
         
         
-        let MaxValue = self.size.width / 2 - 200
-        let MinValue = self.size.width / 3 * 0.95
         
-     
-
-        let rangeMax = UInt32(MaxValue)
-        let rangeMin = UInt32(MinValue)
         
-    
+        
         slider.zPosition = 1
         coin.zPosition = 2
         greenTriangle.zPosition = 3
@@ -219,7 +203,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         purpleOctagon.zPosition = 5
         redSquare.zPosition = 6
         
+        
+        
+        ShapePicker()
+        
+    }
+    
+    func ShapePicker() -> SKSpriteNode{
+        let shapeArray = [purpleOctagon, coin, greenTriangle, orangeHexagon]
+        
+        let MaxValue = self.size.width / 2 - 200
+        let MinValue = self.size.width / 3 * 0.95
+        
+        let rangeMax = UInt32(MaxValue)
+        let rangeMin = UInt32(MinValue)
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         purpleOctagon.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMax), y: self.size.height)
         self.addChild(purpleOctagon)
         
@@ -228,17 +243,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         coin.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMax), y: self.size.height)
         self.addChild(coin)
-        
-        greenTriangle.physicsBody?.velocity = CGVectorMake(5, -10)
-        purpleOctagon.physicsBody?.velocity = CGVectorMake(5, -10)
-        
-
-
-        
-       
+        return shapeArray[Int(arc4random_uniform(UInt32(shapeArray.count)))]
         
     }
-    
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
