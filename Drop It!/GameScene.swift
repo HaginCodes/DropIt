@@ -90,6 +90,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         invisibleBounderies()
         
+        let sprite = ShapePicker()
+        addChild(sprite)
+        
     }
     
     
@@ -207,42 +210,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         ShapePicker()
         
+     
     }
     
     func ShapePicker() -> SKSpriteNode{
-        let shapeArray = [purpleOctagon, coin, greenTriangle, orangeHexagon]
+        let shapeArray = [purpleOctagon, coin, greenTriangle]
         
         let MaxValue = self.size.width / 2 - 200
         let MinValue = self.size.width / 3 * 0.95
         
         let rangeMax = UInt32(MaxValue)
         let rangeMin = UInt32(MinValue)
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         purpleOctagon.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMax), y: self.size.height)
-        self.addChild(purpleOctagon)
         
         greenTriangle.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMax), y: self.size.height)
-        self.addChild(greenTriangle)
         
         coin.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMax), y: self.size.height)
-        self.addChild(coin)
+        
         return shapeArray[Int(arc4random_uniform(UInt32(shapeArray.count)))]
         
     }
