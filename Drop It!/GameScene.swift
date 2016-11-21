@@ -33,6 +33,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var scoreLbl = SKLabelNode()
     var coinLbl = SKLabelNode()
     var coinTitle = SKLabelNode()
+    var lastUpdateTimeInterval : CFTimeInterval = 0
+    
 
     
     func createScene(){
@@ -50,18 +52,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         slider.physicsBody?.contactTestBitMask = PhysicsCatergory.coin | PhysicsCatergory.greenTriangle | PhysicsCatergory.orangeHexagon | PhysicsCatergory.purpleOctagon | PhysicsCatergory.redSquare
         slider.physicsBody?.affectedByGravity = false
         slider.physicsBody?.dynamic = true
-        
-        
-        
-        let wait = SKAction.waitForDuration(3, withRange: 1)
-        let spawn = SKAction.runBlock {
-            
-            self.SpawnShapes()
-        }
-        
-        let sequence = SKAction.sequence([wait, spawn])
-        self.runAction(SKAction.repeatActionForever(sequence))
-        
         
         
         
@@ -90,8 +80,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         invisibleBounderies()
         
-        let sprite = ShapePicker()
-        addChild(sprite)
         
     }
     
@@ -169,43 +157,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func SpawnShapes(){
         
         
-        greenTriangle = SKSpriteNode(imageNamed:"greenTriangle")
-        purpleOctagon = SKSpriteNode(imageNamed: "purpleOctagon")
-        redSquare = SKSpriteNode(imageNamed: "redSquare")
-        coin = SKSpriteNode(imageNamed: "coin")
-        
-        greenTriangle.physicsBody = SKPhysicsBody(texture: greenTriangle.texture!,size: greenTriangle.texture!.size())
-        greenTriangle.physicsBody?.categoryBitMask = PhysicsCatergory.greenTriangle
-        greenTriangle.physicsBody?.collisionBitMask = PhysicsCatergory.Score
-        greenTriangle.physicsBody?.contactTestBitMask = PhysicsCatergory.Score
-        greenTriangle.physicsBody?.affectedByGravity = true
-        greenTriangle.physicsBody?.dynamic = true
-        
-        purpleOctagon.physicsBody = SKPhysicsBody(texture: purpleOctagon.texture!,size: purpleOctagon.texture!.size())
-        purpleOctagon.physicsBody?.categoryBitMask = PhysicsCatergory.purpleOctagon
-        purpleOctagon.physicsBody?.collisionBitMask = PhysicsCatergory.Score
-        purpleOctagon.physicsBody?.contactTestBitMask = PhysicsCatergory.Score
-        purpleOctagon.physicsBody?.affectedByGravity = true
-        purpleOctagon.physicsBody?.dynamic = true
-        
-        coin.physicsBody = SKPhysicsBody(texture: coin.texture!, size: coin.texture!.size())
-        coin.physicsBody?.categoryBitMask = PhysicsCatergory.coin
-        coin.physicsBody?.collisionBitMask = PhysicsCatergory.coin
-        coin.physicsBody?.contactTestBitMask = PhysicsCatergory.slider | PhysicsCatergory.Score
-        coin.physicsBody?.affectedByGravity = true
-        coin.physicsBody?.dynamic = true
-        
-        
-        
-        
-        
-        slider.zPosition = 1
-        coin.zPosition = 2
-        greenTriangle.zPosition = 3
-        orangeHexagon.zPosition = 4
-        purpleOctagon.zPosition = 5
-        redSquare.zPosition = 6
-        
         
         
         ShapePicker()
@@ -222,14 +173,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let rangeMax = UInt32(MaxValue)
         let rangeMin = UInt32(MinValue)
         
-        purpleOctagon.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMax), y: self.size.height)
-        
-        greenTriangle.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMax), y: self.size.height)
-        
-        coin.position = CGPoint(x: CGFloat(arc4random_uniform(rangeMin) + rangeMax), y: self.size.height)
-        
         return shapeArray[Int(arc4random_uniform(UInt32(shapeArray.count)))]
         
+        
+
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -254,5 +201,58 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+     
+        
+        var delta: CFTimeInterval = currentTime - lastUpdateTimeInterval
+        
+        lastUpdateTimeInterval = currentTime
+        
+        if delta >= 3.0 {
+            delta = 0.0
+        }
+       
+        
+        func myDropFunc() {
+            
+            greenTriangle = SKSpriteNode(imageNamed:"greenTriangle")
+            purpleOctagon = SKSpriteNode(imageNamed: "purpleOctagon")
+            redSquare = SKSpriteNode(imageNamed: "redSquare")
+            coin = SKSpriteNode(imageNamed: "coin")
+            
+            greenTriangle.physicsBody = SKPhysicsBody(texture: greenTriangle.texture!,size: greenTriangle.texture!.size())
+            greenTriangle.physicsBody?.categoryBitMask = PhysicsCatergory.greenTriangle
+            greenTriangle.physicsBody?.collisionBitMask = PhysicsCatergory.Score
+            greenTriangle.physicsBody?.contactTestBitMask = PhysicsCatergory.Score
+            greenTriangle.physicsBody?.affectedByGravity = true
+            greenTriangle.physicsBody?.dynamic = true
+            
+            purpleOctagon.physicsBody = SKPhysicsBody(texture: purpleOctagon.texture!,size: purpleOctagon.texture!.size())
+            purpleOctagon.physicsBody?.categoryBitMask = PhysicsCatergory.purpleOctagon
+            purpleOctagon.physicsBody?.collisionBitMask = PhysicsCatergory.Score
+            purpleOctagon.physicsBody?.contactTestBitMask = PhysicsCatergory.Score
+            purpleOctagon.physicsBody?.affectedByGravity = true
+            purpleOctagon.physicsBody?.dynamic = true
+            
+            coin.physicsBody = SKPhysicsBody(texture: coin.texture!, size: coin.texture!.size())
+            coin.physicsBody?.categoryBitMask = PhysicsCatergory.coin
+            coin.physicsBody?.collisionBitMask = PhysicsCatergory.coin
+            coin.physicsBody?.contactTestBitMask = PhysicsCatergory.slider | PhysicsCatergory.Score
+            coin.physicsBody?.affectedByGravity = true
+            coin.physicsBody?.dynamic = true
+            
+            
+            
+            
+            
+            slider.zPosition = 1
+            coin.zPosition = 2
+            greenTriangle.zPosition = 3
+            orangeHexagon.zPosition = 4
+            purpleOctagon.zPosition = 5
+            redSquare.zPosition = 6
+            
+
+        
+        }
     }
 }

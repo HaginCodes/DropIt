@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Drop It!/GameScene.swift"
-            timestampString = "500594678.018299"
+            timestampString = "501284820.345949"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
             landmarkName = "invisibleBounderies()"
             landmarkType = "5">
          </BreakpointContent>
@@ -22,17 +22,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Drop It!/GameScene.swift"
-            timestampString = "500594678.018299"
+            timestampString = "501284820.345949"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
-            landmarkName = "SpawnShapes()"
-            landmarkType = "5">
+            startingLineNumber = "255"
+            endingLineNumber = "255"
+            landmarkName = "myDropFunc()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
